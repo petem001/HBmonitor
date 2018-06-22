@@ -1,0 +1,72 @@
+<h3>HBlink Status Tables:</h3>
+<h4>Master Systems</h4>
+<table style="width:100%; font: 10pt arial, sans-serif">
+    <colgroup>
+        <col style="width: 20%" />
+        <col style="width: 15%" />
+        <col style="width: 15%" />
+        <col style="width: 10%" />
+        <col style="width: 15%" />
+        <col style="width: 15%" />
+        <col style="width: 10%" />
+    </colgroup>
+    <tr style="width:100%; font: 10pt arial, sans-serif; background-color:#666666; color:white">
+        <th>HBP System</th>
+        <th>Client Radio ID</th>
+        <th>Callsign</th>
+        <th>Connection</th>
+        <th>Pings</br>Received</th>
+        <th>IP</th>
+        <th>Port</th>
+    </tr>
+    
+    {% for _master in _table['MASTERS'] %}
+    
+    <tr>
+        <td style="font-weight:bold" rowspan="{{ _table['MASTERS'][_master]|length * 2 }}"> {{ _master}} </td>
+        {% for _client, _cdata in _table['MASTERS'][_master]['CLIENTS'].iteritems() %}
+        <td>{{ _client }}</td>
+        <td>{{ _cdata['CALLSIGN'] }}</td>
+        <td style={{ 'background-color:#00ff00' if _cdata['CONNECTION'] == 'YES' else ';background-color:#ff0000' }}>{{ _cdata['CONNECTION'] }}</td>
+        <td>{{ _cdata['PINGS_RECEIVED'] }}</td>
+        <td>{{ _cdata['IP'] }}</td>
+        <td>{{ _cdata['PORT'] }}</td>
+    </tr>
+    {% endfor %}
+    {% endfor %}
+</table>
+
+<h4>Client Systems</h4>
+<table style="width:100%; font: 10pt arial, sans-serif">
+    <colgroup>
+        <col style="width: 20%" />
+        <col style="width: 15%" />
+        <col style="width: 15%" />
+        <col style="width: 10%" />
+        <col style="width: 15%" />
+        <col style="width: 15%" />
+        <col style="width: 10%" />
+    </colgroup>
+    <tr style="width:100%; font: 10pt arial, sans-serif; background-color:#666666; color:white">
+        <th>HBP System</th>
+        <th>Client Radio ID</th>
+        <th>Callsign</th>
+        <th>Connection</th>
+        <th>Ping Sent</th>
+        <th>Ping Ack</th>
+        <th>Master</th>
+    </tr>
+    
+    {% for _client in _table['CLIENTS'] %}
+    
+    <tr>
+        <td style="font-weight:bold"> {{ _client}} </td>
+        <td>{{ _table['CLIENTS'][_client]['RADIO_ID'] }}</td>
+        <td>{{ _table['CLIENTS'][_client]['CALLSIGN'] }}</td>
+        <td style={{ 'background-color:#00ff00' if _table['CLIENTS'][_client]['STATS']['CONNECTION'] == 'YES' else ';background-color:#ff0000' }}>{{ _table['CLIENTS'][_client]['STATS']['CONNECTION'] }}</td>
+        <td>{{ _table['CLIENTS'][_client]['STATS']['PINGS_SENT'] }}</td>
+        <td>{{ _table['CLIENTS'][_client]['STATS']['PINGS_ACKD'] }}</td>
+        <td>{{ _table['CLIENTS'][_client]['MASTER_IP'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
